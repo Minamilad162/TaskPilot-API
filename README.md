@@ -151,14 +151,57 @@ Implemented bonus items:
 
 CQRS, MediatR, and Redis are documented as future enhancements rather than added artificially, keeping the assessment simple and production-minded.
 
+## Final Verification
+
+Before submission, run the full verification flow:
+
+```bash
+dotnet restore
+dotnet build
+dotnet test
+```
+
+Apply migrations:
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet ef database update --project src/ProjectTaskManagement.Infrastructure --startup-project src/ProjectTaskManagement.Api
+```
+
+Run the API:
+
+```powershell
+dotnet run --project src/ProjectTaskManagement.Api --urls "https://localhost:7001;http://localhost:5000"
+```
+
+Then verify:
+
+```text
+/health
+/swagger
+/api/v1/auth/register
+/api/v1/auth/login
+/api/v1/auth/me
+/api/v1/projects
+/api/v1/projects/{projectId}/tasks
+```
+
+A detailed checklist is available in:
+
+```text
+docs/FINAL_TESTING_CHECKLIST.md
+```
+
 ## Documentation
 
 - `docs/SYSTEM_DESIGN.md`
 - `docs/PROJECT_STRUCTURE.md`
 - `docs/API_CONTRACT.md`
 - `docs/API_TESTING_GUIDE.md`
+- `docs/FINAL_TESTING_CHECKLIST.md`
 - `docs/MILESTONE_12_DOCKER_SUPPORT.md`
 - `docs/MILESTONE_13_AUTHORIZATION_API_VERSIONING.md`
+- `docs/MILESTONE_14_FINAL_REVIEW_CLEANUP.md`
 - `SUBMISSION_NOTES.md`
 
 ## Unit Tests
