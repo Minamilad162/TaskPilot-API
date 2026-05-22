@@ -50,13 +50,13 @@ public sealed class ProjectService(
                 project.CreatedAt,
                 project.Tasks
                     .OrderBy(task => task.DueDate)
-                    .Select(task => new TaskDto(
+                   .Select(task => new TaskDto(
                         task.Id,
                         task.Title,
                         task.Description,
-                        task.Status,
+                        task.Status.ToString(),
                         task.DueDate,
-                        task.Priority,
+                        task.Priority.ToString(),
                         task.ProjectId,
                         task.CreatedAt))
                     .ToList()))
