@@ -136,3 +136,13 @@ Run order:
 - `docs/API_CONTRACT.md`
 - `docs/API_TESTING_GUIDE.md`
 - `SUBMISSION_NOTES.md`
+
+## Unit Tests
+
+Run the application tests from the repository root:
+
+```bash
+dotnet test
+```
+
+The test project covers the main application services using EF Core InMemory. The focus is on ownership filtering, project operations, task creation, task status updates, and expected exceptions.
