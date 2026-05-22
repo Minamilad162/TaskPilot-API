@@ -139,27 +139,13 @@ Run order:
 4. Get / Update / Delete resources
 
 
-## Bonus Features
-
-Implemented bonus items:
+##Features
 
 - Generic response wrapper for consistent API results.
 - Role-based authorization using ASP.NET Core Identity roles and JWT role claims.
 - Unit tests for application services.
 - Docker support for optional containerized execution.
 - API versioning convention through the `/api/v1` route prefix.
-
-CQRS, MediatR, and Redis are documented as future enhancements rather than added artificially, keeping the assessment simple and production-minded.
-
-## Final Verification
-
-Before submission, run the full verification flow:
-
-```bash
-dotnet restore
-dotnet build
-dotnet test
-```
 
 Apply migrations:
 
@@ -173,19 +159,6 @@ Run the API:
 ```powershell
 dotnet run --project src/ProjectTaskManagement.Api --urls "https://localhost:7001;http://localhost:5000"
 ```
-
-Then verify:
-
-```text
-/health
-/swagger
-/api/v1/auth/register
-/api/v1/auth/login
-/api/v1/auth/me
-/api/v1/projects
-/api/v1/projects/{projectId}/tasks
-```
-
 A detailed checklist is available in:
 
 ```text
@@ -204,40 +177,5 @@ docs/FINAL_TESTING_CHECKLIST.md
 - `docs/MILESTONE_14_FINAL_REVIEW_CLEANUP.md`
 - `SUBMISSION_NOTES.md`
 
-## Unit Tests
-
-Run the application tests from the repository root:
-
-```bash
-dotnet test
-```
-
-The test project covers the main application services using EF Core InMemory. The focus is on ownership filtering, project operations, task creation, task status updates, and expected exceptions.
 
 
-## Docker Support
-
-Docker support is optional and uses SQL Server 2022 plus the API container.
-
-Start the containers:
-
-```bash
-docker compose up --build
-```
-
-The API will be available at:
-
-```text
-http://localhost:8080/swagger
-```
-
-The API container expects the database schema to exist. Apply the migrations against the Docker SQL Server from the host machine:
-
-```powershell
-$env:ASPNETCORE_ENVIRONMENT="Development"
-$env:ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=TaskPilotDb;User Id=sa;Password=TaskPilot_Strong_Password123!;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true"
-
-dotnet ef database update --project src/ProjectTaskManagement.Infrastructure --startup-project src/ProjectTaskManagement.Api
-```
-
-LocalDB remains the default development connection for normal local runs.
