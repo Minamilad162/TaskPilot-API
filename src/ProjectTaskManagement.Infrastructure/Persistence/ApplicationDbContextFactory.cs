@@ -8,7 +8,8 @@ public sealed class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Ap
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=TaskPilotDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=TaskPilotDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true");
+
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }

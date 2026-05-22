@@ -4,15 +4,17 @@ TaskPilot API is a clean and scalable Project & Task Management backend built wi
 
 ## Current Milestone
 
-Milestone 07 - Tasks Module.
+Milestone 09 - Database Migrations.
 
-Implemented authenticated task management inside user-owned projects.
+Implemented the initial EF Core migration and SQL schema script for Identity, Projects, and TaskItems.
 
 ## Available Modules
 
 - Authentication: Register and Login using JWT.
 - Projects: Create, read, update, and delete authenticated user projects.
 - Tasks: Create tasks inside projects, list project tasks, update task status, and delete tasks.
+- API Error Handling: Global exception middleware and consistent validation responses.
+- Database: Initial migration and SQL schema script.
 
 ## Run Locally
 
@@ -34,6 +36,30 @@ Swagger:
 http://localhost:5000/swagger
 ```
 
-## Notes
+## Database Setup
 
-Database migrations will be finalized in the dedicated database milestone after the main modules are complete.
+Make sure SQL Server is running and the `DefaultConnection` in `src/ProjectTaskManagement.Api/appsettings.Development.json` points to your local database.
+
+Install or update the EF Core CLI if needed:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+If it is already installed:
+
+```bash
+dotnet tool update --global dotnet-ef
+```
+
+Apply the migration:
+
+```bash
+dotnet ef database update --project src/ProjectTaskManagement.Infrastructure --startup-project src/ProjectTaskManagement.Api
+```
+
+Alternative SQL script:
+
+```text
+database/migrations/001_initial_schema.sql
+```
