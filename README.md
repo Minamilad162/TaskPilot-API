@@ -15,6 +15,7 @@ A clean and scalable Project & Task Management backend built with .NET 9, ASP.NE
 - EF Core migrations
 - Swagger with JWT support
 - Postman collection
+- Optional Docker support
 
 ## Architecture
 
@@ -41,6 +42,7 @@ docs/
 - SQL Server LocalDB or SQL Server Express
 - Visual Studio 2022 / VS Code
 - Postman optional
+- Docker Desktop optional
 
 ## Database Connection
 
@@ -135,6 +137,7 @@ Run order:
 - `docs/PROJECT_STRUCTURE.md`
 - `docs/API_CONTRACT.md`
 - `docs/API_TESTING_GUIDE.md`
+- `docs/MILESTONE_12_DOCKER_SUPPORT.md`
 - `SUBMISSION_NOTES.md`
 
 ## Unit Tests
@@ -146,3 +149,31 @@ dotnet test
 ```
 
 The test project covers the main application services using EF Core InMemory. The focus is on ownership filtering, project operations, task creation, task status updates, and expected exceptions.
+
+
+## Docker Support
+
+Docker support is optional and uses SQL Server 2022 plus the API container.
+
+Start the containers:
+
+```bash
+docker compose up --build
+```
+
+The API will be available at:
+
+```text
+http://localhost:8080/swagger
+```
+
+The API container expects the database schema to exist. Apply the migrations against the Docker SQL Server from the host machine:
+
+```powershell
+$env:ASPNETCORE_ENVIRONMENT="Development"
+$env:ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=TaskPilotDb;User Id=sa;Password=TaskPilot_Strong_Password123!;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true"
+
+dotnet ef database update --project src/ProjectTaskManagement.Infrastructure --startup-project src/ProjectTaskManagement.Api
+```
+
+LocalDB remains the default development connection for normal local runs.
