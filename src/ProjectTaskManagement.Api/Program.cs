@@ -1,8 +1,11 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using ProjectTaskManagement.Api.Middleware;
 using ProjectTaskManagement.Api.Services;
 using ProjectTaskManagement.Application;
 using ProjectTaskManagement.Application.Common.Abstractions;
+using ProjectTaskManagement.Application.Common.Models;
 using ProjectTaskManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,22 @@ builder.Services
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(entry => entry.Value?.Errors.Count > 0)
+            .SelectMany(entry => entry.Value!.Errors)
+            .Select(error => string.IsNullOrWhiteSpace(error.ErrorMessage)
+                ? "Invalid request value."
+                : error.ErrorMessage)
+            .ToArray();
+
+        return new BadRequestObjectResult(ApiResponse<object>.Fail("Validation failed.", errors));
+    };
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -63,6 +82,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
