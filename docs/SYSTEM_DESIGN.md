@@ -240,3 +240,12 @@ The current system is intentionally simple, but the design supports future exten
 - User-owned resources are filtered by OwnerId.
 - No sensitive values should be committed to source control.
 - Production secrets should be provided through environment variables.
+
+
+## Bonus Implementation Notes
+
+The solution includes a generic response wrapper, role-based authorization, unit tests, Docker support, and a versioned API route prefix (`/api/v1`).
+
+Role-based authorization is implemented with ASP.NET Core Identity roles. New users receive the `User` role during registration, role claims are included in the JWT, and protected project/task endpoints require that role explicitly.
+
+CQRS, MediatR, and Redis are intentionally not introduced in the current scope to avoid unnecessary complexity for a small assessment API. They can be added later if the business case grows, for example by moving application service methods into commands/queries or adding Redis caching for high-read project/task queries.

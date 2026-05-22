@@ -4,6 +4,7 @@ using ProjectTaskManagement.Application.Auth;
 using ProjectTaskManagement.Application.Auth.Dtos;
 using ProjectTaskManagement.Application.Common.Abstractions;
 using ProjectTaskManagement.Application.Common.Exceptions;
+using ProjectTaskManagement.Application.Common.Security;
 using ProjectTaskManagement.Infrastructure.Identity;
 
 namespace ProjectTaskManagement.Infrastructure.Authentication;
@@ -13,8 +14,6 @@ public sealed class AuthService(
     RoleManager<IdentityRole<Guid>> roleManager,
     IJwtTokenService jwtTokenService) : IAuthService
 {
-    private const string DefaultRole = "User";
-
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
         var email = request.Email.Trim();
@@ -42,7 +41,7 @@ public sealed class AuthService(
             throw new ValidationException(createResult.Errors.Select(error => error.Description).ToList());
         }
 
-        var roleResult = await userManager.AddToRoleAsync(user, DefaultRole);
+        var roleResult = await userManager.AddToRoleAsync(user, ApplicationRoles.User);
         if (!roleResult.Succeeded)
         {
             throw new ValidationException(roleResult.Errors.Select(error => error.Description).ToList());
@@ -74,9 +73,9 @@ public sealed class AuthService(
 
     private async Task EnsureDefaultRoleAsync()
     {
-        if (!await roleManager.RoleExistsAsync(DefaultRole))
+        if (!await roleManager.RoleExistsAsync(ApplicationRoles.User))
         {
-            await roleManager.CreateAsync(new IdentityRole<Guid>(DefaultRole));
+            await roleManager.CreateAsync(new IdentityRole<Guid>(ApplicationRoles.User));
         }
     }
 }

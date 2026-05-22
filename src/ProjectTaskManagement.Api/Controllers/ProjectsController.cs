@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTaskManagement.Application.Common.Models;
+using ProjectTaskManagement.Application.Common.Security;
 using ProjectTaskManagement.Application.Projects.Dtos;
 using ProjectTaskManagement.Application.Projects.Services;
 
 namespace ProjectTaskManagement.Api.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Roles = ApplicationRoles.User)]
 [Route("api/v1/projects")]
 public sealed class ProjectsController(IProjectService projectService) : ControllerBase
 {

@@ -19,5 +19,13 @@ public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
 
     public string? Email => httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
+    public string? FullName => httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
+
+    public IReadOnlyCollection<string> Roles => httpContextAccessor.HttpContext?.User
+        .FindAll(ClaimTypes.Role)
+        .Select(claim => claim.Value)
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .ToArray() ?? [];
+
     public bool IsAuthenticated => httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated == true;
 }

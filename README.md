@@ -6,6 +6,7 @@ A clean and scalable Project & Task Management backend built with .NET 9, ASP.NE
 
 - User registration and login
 - JWT authentication
+- Role-based authorization
 - Project management
 - Task management inside projects
 - User-owned data isolation
@@ -97,6 +98,12 @@ Bearer YOUR_TOKEN_HERE
 
 ## Main Endpoints
 
+### Authentication
+
+```text
+GET    /api/v1/auth/me
+```
+
 ### Projects
 
 ```text
@@ -131,6 +138,19 @@ Run order:
 3. Create Task
 4. Get / Update / Delete resources
 
+
+## Bonus Features
+
+Implemented bonus items:
+
+- Generic response wrapper for consistent API results.
+- Role-based authorization using ASP.NET Core Identity roles and JWT role claims.
+- Unit tests for application services.
+- Docker support for optional containerized execution.
+- API versioning convention through the `/api/v1` route prefix.
+
+CQRS, MediatR, and Redis are documented as future enhancements rather than added artificially, keeping the assessment simple and production-minded.
+
 ## Documentation
 
 - `docs/SYSTEM_DESIGN.md`
@@ -138,6 +158,7 @@ Run order:
 - `docs/API_CONTRACT.md`
 - `docs/API_TESTING_GUIDE.md`
 - `docs/MILESTONE_12_DOCKER_SUPPORT.md`
+- `docs/MILESTONE_13_AUTHORIZATION_API_VERSIONING.md`
 - `SUBMISSION_NOTES.md`
 
 ## Unit Tests

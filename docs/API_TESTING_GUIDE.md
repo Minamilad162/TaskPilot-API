@@ -62,6 +62,14 @@ Copy `data.accessToken` and use it in Swagger/Postman as:
 Bearer YOUR_TOKEN_HERE
 ```
 
+### Current User
+
+```http
+GET /api/v1/auth/me
+```
+
+Use this endpoint after login to confirm that the token is valid and contains the expected `User` role.
+
 ## Projects Flow
 
 ### Create Project

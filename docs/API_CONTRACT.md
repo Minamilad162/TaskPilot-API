@@ -88,6 +88,24 @@ Response data:
 }
 ```
 
+### Current User
+
+```http
+GET /api/v1/auth/me
+Authorization: Bearer {token}
+```
+
+Response data:
+
+```json
+{
+  "userId": "guid",
+  "email": "bishoy@example.com",
+  "fullName": "Bishoy Samuel",
+  "roles": ["User"]
+}
+```
+
 ## Projects
 
 ### Create Project
